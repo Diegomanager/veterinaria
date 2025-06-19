@@ -10,15 +10,11 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_06_14_000632) do
+ActiveRecord::Schema[8.0].define(version: 2025_06_19_000201) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "animals", force: :cascade do |t|
-    t.string "rails"
-    t.string "generate"
-    t.string "model"
-    t.string "Animal"
     t.string "name"
     t.date "date_of_birth"
     t.integer "escape_attempts"
@@ -26,5 +22,25 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_14_000632) do
     t.decimal "weight_kg"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "species_id"
+    t.bigint "owner_id"
+    t.index ["owner_id"], name: "index_animals_on_owner_id"
+    t.index ["species_id"], name: "index_animals_on_species_id"
   end
+
+  create_table "owners", force: :cascade do |t|
+    t.string "full_name"
+    t.integer "age"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "species", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_foreign_key "animals", "owners"
+  add_foreign_key "animals", "species"
 end
